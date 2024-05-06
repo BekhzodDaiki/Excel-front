@@ -151,36 +151,38 @@ let sheetWindow; // Used for opening a new browser tab to load the created sprea
  * Calls FunctionCreateSpreadsheet in the Azure Functions project to create the spreadsheet.
  * Calls uploadFile to then upload the new spreadsheet to OneDrive.
  */
-function openInExcel(type) {
+function openInExcel() {
     // Create new blank tab in response to onclick (to avoid popup blockers).
     sheetWindow = window.open("", "_blank");
+    const urlParams = new URLSearchParams(window.location.search);
+    const tempFunction = urlParams.get('function');
 
     // Get mock data.
     let bodyJSON = ''
     // const bodyJSON = JSON.stringify(tableData);
-    if (type === 'ask') {
+    if (tempFunction === 'ask') {
         bodyJSON = JSON.stringify(askAi)
     }
-    if (type === 'table') {
-        bodyJSON = JSON.stringify(tableAi)
-    }
-    if (type === 'translate') {
+    // if (tempFunction === 'table') {
+    //     bodyJSON = JSON.stringify(tableAi)
+    // }
+    if (tempFunction === 'translate') {
         bodyJSON = JSON.stringify(translateAi)
     }
-    if (type === 'extract') {
+    if (tempFunction === 'extract') {
         bodyJSON = JSON.stringify(extractAi)
     }
-    if (type === 'format') {
-        bodyJSON = JSON.stringify(formatAi)
-    }
-    if (type === 'fill') {
+    // if (tempFunction === 'format') {
+    //     bodyJSON = JSON.stringify(formatAi)
+    // }
+    if (tempFunction === 'fill') {
         bodyJSON = JSON.stringify(fillAi)
     }
-    if (type === 'list') {
+    if (tempFunction === 'list') {
         bodyJSON = JSON.stringify(listAi)
     }
 
-    const url = 'http://localhost:7071/api/FunctionCreateSpreadsheet';
+    const url = 'https://gptexceladdin.appsdowonders.com/api/FunctionCreateSpreadsheet';
 
     // Use Azure Function to create spreadsheet
     fetch(url, {
@@ -194,7 +196,7 @@ function openInExcel(type) {
         .then((blob) => {
             console.log(blob);
             let date = new Date();
-            uploadFile('openinexcel', `spreadsheet-${date.getHours()}${date.getMinutes()}${date.getMilliseconds()}.xlsx`, blob);
+            uploadFile('openinexcel', `spreadsheet-${date.getHours()}${date.getMinutes()}${date.getSeconds()}${date.getMilliseconds()}.xlsx`, blob);
 
         });
 }
