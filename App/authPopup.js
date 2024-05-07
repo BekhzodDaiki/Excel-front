@@ -2,10 +2,14 @@
 // Licensed under the MIT License.
 
 // Create the main myMSALObj instance
-// configuration parameters are located at authConfig.js
-const myMSALObj = new msal.PublicClientApplication(msalConfig);
+// configuration parameters are located at authConfig.js+
 
+const myMSALObj = new msal.PublicClientApplication(msalConfig);
 let username = '';
+
+if (!myMSALObj.getAllAccounts().length) {
+    signIn();
+}
 
 /**
  * This method adds an event callback function to the MSAL object
@@ -153,7 +157,7 @@ let sheetWindow; // Used for opening a new browser tab to load the created sprea
  */
 function openInExcel() {
     // Create new blank tab in response to onclick (to avoid popup blockers).
-    sheetWindow = window.open("", "_blank");
+    // sheetWindow = window.open("", "_blank");
     const urlParams = new URLSearchParams(window.location.search);
     const tempFunction = urlParams.get('function');
 
@@ -200,31 +204,6 @@ function openInExcel() {
 
         });
 }
-// function openInExcel() {
-//     // Create new blank tab in response to onclick (to avoid popup blockers).
-//     sheetWindow = window.open("", "_blank");
-
-//     // Get mock data.
-//     const bodyJSON = JSON.stringify(tableData);
-
-//     const url = 'http://localhost:7071/api/FunctionCreateSpreadsheet';
-
-//     // Use Azure Function to create spreadsheet
-//     fetch(url, {
-//         headers: {
-//             'Content-Type': 'application/octet-stream',
-//         },
-//         method: 'POST',
-//         body: bodyJSON,
-//     })
-//         .then((response) => response.blob())
-//         .then((blob) => {
-//             console.log(blob);
-//             let date = new Date();
-//             uploadFile('openinexcel', `spreadsheet-${date.getHours()}${date.getMinutes()}${date.getMilliseconds()}.xlsx`, blob);
-
-//         });
-// }
 
 /**
  * Creates a new spreadsheet on Microsoft OneDrive.
@@ -250,7 +229,8 @@ async function uploadFile(folderName, fileName, data) {
     );
 
     // Update the browser tab (opened previously) to open the new spreadsheet file.
-    sheetWindow.location = result.webUrl;
+    window.location = result.webUrl;
+    // sheetWindow.location = result.webUrl;
 
 }
 
