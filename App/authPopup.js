@@ -7,7 +7,13 @@
 const myMSALObj = new msal.PublicClientApplication(msalConfig);
 let username = '';
 
-if (!myMSALObj.getAllAccounts().length) {
+let isUserLogged = myMSALObj.getAllAccounts().length > 0;
+
+if(isUserLogged){
+    openInExcel();
+}
+
+if(!isUserLogged) {
     signIn();
 }
 
@@ -104,6 +110,7 @@ function handleResponse(response) {
         const accounts = myMSALObj.getAllAccounts();
         username = response.account.username;
         showWelcomeMessage(username, accounts);
+        openInExcel();
     } else {
         selectAccount();
     }
@@ -119,7 +126,7 @@ function signIn() {
         .loginPopup(loginRequest)
         .then(handleResponse)
         .catch((error) => {
-            console.error(error);
+            console.error('we are here: ', error);
         });
 }
 
