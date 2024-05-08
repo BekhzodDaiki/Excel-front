@@ -8,10 +8,8 @@
  */
 const msalConfig = {
     auth: {
-        // clientId: 'Enter_the_Application_Id_Here', // This is the ONLY mandatory field that you need to supply.
         clientId: 'a1a26887-7d75-4efb-b1b5-58bc50ec4ec6', // This is the ONLY mandatory field that you need to supply.
-        authority: 'https://login.microsoftonline.com/90db5b21-426a-485e-b949-b68cf56f871b', // Defaults to "https://login.microsoftonline.com/common"
-        // authority: 'https://login.microsoftonline.com/Enter_the_Tenant_Id_Here', // Defaults to "https://login.microsoftonline.com/common"
+        authority: 'https://login.microsoftonline.com/common', // Defaults to "https://login.microsoftonline.com/common"
         redirectUri: '/', // You must register this URI on Azure Portal/App Registration. Defaults to window.location.href
         postLogoutRedirectUri: '/', //Indicates the page to navigate after logout.
         clientCapabilities: ['CP1'], // this lets the resource owner know that this client is capable of handling claims challenge.
